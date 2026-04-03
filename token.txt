@@ -1,0 +1,3 @@
+GROQ_API_KEY=your grok api key
+DISCORD_USER_TOKEN=your discord user token
+WEBHOOK_URL=your webhook url
