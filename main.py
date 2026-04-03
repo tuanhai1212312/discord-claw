@@ -217,23 +217,19 @@ def process_message(author_name, author_id, content, webhook_id, is_bot):
                 if actions2:
                     ar2 = action.execute_actions(actions2, GUILDS_INFO)
                     _, error_parts2 = collect_action_data(ar2)
-                    # Chỉ lấy reply AI, không append data
                     reply = reply2 if reply2 else reply
                     if error_parts2:
-                        # Feed lỗi lại cho AI giải thích
                         err_feedback = "[ERRORS]:\n" + "\n".join(error_parts2)
                         result3 = brain.think(err_feedback, "System")
                         tokens_used += result3.get("tokens_used", 0)
                         if result3.get("reply"):
                             reply = result3["reply"]
                 else:
-                    # AI đã có đủ info, chỉ lấy reply
                     reply = reply2 if reply2 else reply
 
                 log(f"Need Result | Reply : {reply[:80]}{'...' if len(reply) > 80 else ''} | Token used : {tokens_used}")
 
             else:
-                # Không cần result — chỉ dùng reply AI ban đầu
                 if error_parts:
                     err_feedback = "[ERRORS]: " + "; ".join(error_parts)
                     retry = brain.think(err_feedback, "System")
@@ -248,7 +244,6 @@ def process_message(author_name, author_id, content, webhook_id, is_bot):
         else:
             log(f"Action : 0/0 | Reply : {reply[:80]}{'...' if len(reply) > 80 else ''} | Token used : {tokens_used}")
 
-        # Gửi CHỈ reply của AI, không có data thêm
         if reply:
             if len(reply) > 2000:
                 for i in range(0, len(reply), 1990):
